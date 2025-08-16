@@ -1,0 +1,11 @@
+.direnv
+
+# Ruby
+vendor
+
+# Swift
+*.swift.c
+
+# Haskell
+.stack-work
+*.cabal

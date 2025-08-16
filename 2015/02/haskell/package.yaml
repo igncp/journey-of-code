@@ -1,0 +1,25 @@
+name: joc201502
+version: 0.0.1.0
+
+dependencies:
+  - split
+  - base
+
+library:
+  source-dirs: app
+
+executables:
+  01:
+    main: 01.hs
+    source-dirs: app
+  02:
+    main: 02.hs
+    source-dirs: app
+
+tests:
+  my-project-test:
+    main: TestCommon.hs
+    source-dirs: tests
+    dependencies:
+      - HUnit
+      - joc201502
