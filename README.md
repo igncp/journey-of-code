@@ -19,7 +19,7 @@ dependencies, increasing over time. Additionally, there should be linters
 adding common formatting and style checks where possible.
 
 All exercises should be runnable with `scripts/run.sh` which should run within
-the Nix shell or in the OCI container (TODO).
+the Nix shell or in the OCI container.
 
 ### Languages
 
@@ -30,7 +30,7 @@ experience with them or want to keep improving with them:
 - Swift
 - Lua
 - Ruby
-- SQL/MSSQL
+- SQL/T-SQL
 - Rust
 
 Secondary list. These languages are either interesting but not as useful for me, or I have many experience

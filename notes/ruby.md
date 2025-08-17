@@ -1,1 +1,0 @@
-- To save gems locally: `bundle config path --local vendor/bundle`

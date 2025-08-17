@@ -21,7 +21,12 @@
               []
               ++ (with pkgs; [
                 bashInteractive
+                go
+                gradle
                 haskellPackages.stack
+                kotlin
+                ktfmt
+                lua
                 podman
                 ruby
               ]);
@@ -30,6 +35,7 @@
             packages =
               []
               ++ (with pkgs; [
+                sourcekit-lsp
                 swift-format
                 swiftPackages.Foundation
                 swiftPackages.swift

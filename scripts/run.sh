@@ -183,6 +183,48 @@ resolve_haskell() {
   done
 }
 
+resolve_kotlin() {
+  common_scripts
+
+  if [ "$INSTALL" == "1" ] && [ ! -f install.sh ] && [ -f gradlew ]; then
+    ./gradlew tasks || {
+      echo "Error installing Haskell dependencies in $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$COMPILE" == "1" ] && [ ! -f install.sh ] && [ -f gradlew ]; then
+    ./gradlew assemble || {
+      echo "Error building: $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$CHECK" == "1" ] && [ ! -f test.sh ] && [ -d tests ] && [ -f gradlew ]; then
+    ./gradlew ktfmtFormat || {
+      echo "Error running tests in $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$TEST" == "1" ] && [ ! -f test.sh ] && [ -d tests ] && [ -f gradlew ]; then
+    ./gradlew test || {
+      echo "Error running tests in $PWD"
+      exit 1
+    }
+  fi
+
+  local SOLUTIONS=(01 02)
+  for solution in "${SOLUTIONS[@]}"; do
+    local SOLUTION_PATH="$PWD - $solution"
+    java -cp app/build/libs/app.jar org.example.AppKt $solution || {
+      echo "Error running solution: $PWD - $solution"
+      exit 1
+    }
+    echo "$SOLUTION_PATH" ✓
+  done
+}
+
 main() {
   local YEARS=$(find . -maxdepth 1 -type d -name '[0-9][0-9][0-9][0-9]' | sort)
 
@@ -205,6 +247,9 @@ main() {
         fi
 
         case "$resolution" in
+        *kotlin)
+          resolve_kotlin
+          ;;
         *ruby)
           resolve_ruby
           ;;
