@@ -9,3 +9,34 @@ vendor
 # Haskell
 .stack-work
 *.cabal
+.ruby-lsp
+
+# Kotlin
+kls_database.db
+.gradle
+build
+.kotlin
+
+# Lua
+luarocks
+lua
+lua_modules
+.luarocks
+
+# Swift
+.DS_Store
+.build
+Packages
+*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/config/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
+
+# Rust
+target
+
+# PHP
+vendor
+.php-cs-fixer.cache

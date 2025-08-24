@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Common
-  def self.get_input_chars()
-    input_file = File.open("../input_1.txt", "r")
-    input_chars = input_file.read.split("")
+  def self.get_input_chars
+    input_file = File.open('../input_1.txt', 'r')
+    input_chars = input_file.read.chars
     input_file.close
 
-    return input_chars
+    input_chars
   end
 
   def self.get_floor_number(input_chars)
-    current_floor, _ = traverse_floors(input_chars)
+    current_floor, = traverse_floors(input_chars)
     current_floor
   end
 
@@ -24,16 +26,14 @@ module Common
     position
   end
 
-  private
-
   def self.traverse_floors(input_chars)
     current_floor = 0
     position = 0
 
     input_chars.each do |char|
-      if char == "("
+      if char == '('
         current_floor += 1
-      elsif char == ")"
+      elsif char == ')'
         current_floor -= 1
       end
       position += 1
@@ -41,6 +41,6 @@ module Common
       yield(current_floor, position) if block_given?
     end
 
-    return current_floor, position
+    [current_floor, position]
   end
 end

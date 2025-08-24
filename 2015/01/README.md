@@ -1,4 +1,5 @@
 # Day 1: Not Quite Lisp
 
-- [x] Completed
+- [x] `ruby`: Completed
+- [x] `swift`: Completed
 - https://adventofcode.com/2015/day/1

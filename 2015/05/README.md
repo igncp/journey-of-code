@@ -1,0 +1,5 @@
+# Day 5: Doesn't He Have Intern-Elves For This?
+
+- [x] `rust`: Completed
+- [ ] `php`: Completed
+- https://adventofcode.com/2015/day/5

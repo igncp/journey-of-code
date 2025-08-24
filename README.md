@@ -5,7 +5,8 @@ languages. Used for practicing different languages and approaches to the
 problems, and also to setup my development environment for each language.
 
 The only dependencies to use this project is using the 'Nix' package manager.
-The exercises should work at least on Linux.
+Beware, it will need a lot of storage for the multiple languages. The exercises
+should work at least on Linux.
 
 ## Rules
 
@@ -14,7 +15,7 @@ vanilla features but also with external libraries. Sometimes will try to make
 the solution as simple as possible, but other times will over-engineer the
 solution to practice more complex features of the language.
 
-Also there should be some common code for all languages with utilities, shared
+Also there may be some common code for all languages with utilities, shared
 dependencies, increasing over time. Additionally, there should be linters
 adding common formatting and style checks where possible.
 

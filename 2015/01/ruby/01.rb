@@ -1,6 +1,8 @@
-require_relative "common"
+# frozen_string_literal: true
 
-input_chars = Common::get_input_chars()
-current_floor = Common::get_floor_number(input_chars)
+require_relative 'common'
 
-raise "Invalid solution" unless current_floor == 138
+input_chars = Common.get_input_chars
+current_floor = Common.get_floor_number(input_chars)
+
+raise 'Invalid solution' unless current_floor == 138

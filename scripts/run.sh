@@ -145,6 +145,118 @@ resolve_ruby() {
   done
 }
 
+resolve_lua() {
+  common_scripts
+
+  if [ "$INSTALL" == "1" ] && [ ! -f install.sh ] && [ -f *.rockspec ]; then
+    luarocks make
+  fi
+
+  if [ "$TEST" == "1" ] && [ ! -f test.sh ] && [ -f tests.lua ]; then
+    echo "Running tests: $PWD"
+    lua tests.lua || {
+      echo "Error running tests in $PWD"
+      exit 1
+    }
+  fi
+
+  local SOLUTIONS=$(find . -maxdepth 1 -type f -name '0[12].lua' | sort)
+  for solution in $SOLUTIONS; do
+    local SOLUTION_PATH=$(readlink -f "$solution")
+    lua "$solution" || {
+      echo "Error running solution: $PWD/$solution"
+      exit 1
+    }
+    echo "$SOLUTION_PATH" ✓
+  done
+}
+
+resolve_go() {
+  common_scripts
+
+  if [ "$INSTALL" == "1" ] && [ ! -f install.sh ] && [ -f go.mod ]; then
+    go mod tidy || {
+      echo "Error installing Go dependencies in $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$CHECK" == "1" ] && [ ! -f check.sh ]; then
+    echo "Running checks: $PWD"
+    gofmt -e -d -s . || {
+      echo "Error checking $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$TEST" == "1" ] && [ ! -f test.sh ]; then
+    echo "Running tests: $PWD"
+    go test ./src || {
+      echo "Error running tests in $PWD"
+      exit 1
+    }
+  fi
+
+  local SOLUTIONS=$(find cmd -maxdepth 1 -type d -name '0[12]' | sort)
+  for solution in $SOLUTIONS; do
+    local SOLUTION_PATH=$(readlink -f "$solution")
+    go run $SOLUTION_PATH || {
+      echo "Error running solution: $PWD/$solution"
+      exit 1
+    }
+    echo "$SOLUTION_PATH" ✓
+  done
+}
+
+resolve_rust() {
+  common_scripts
+
+  if [ "$INSTALL" == "1" ] && [ ! -f install.sh ] && [ -f Cargo.toml ]; then
+    cargo check || {
+      echo "Error installing Go dependencies in $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$CHECK" == "1" ] && [ ! -f check.sh ]; then
+    echo "Running checks: $PWD"
+    cargo clippy --all-features || {
+      echo "Error checking clippy $PWD"
+      exit 1
+    }
+    cargo fmt --all -- --check || {
+      echo "Error checking fmt $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$COMPILE" == "1" ] && [ ! -f compile.sh ]; then
+    echo "Compiling: $PWD"
+    cargo build --release || {
+      echo "Error checking $PWD"
+      exit 1
+    }
+  fi
+
+  if [ "$TEST" == "1" ] && [ ! -f test.sh ]; then
+    echo "Running tests: $PWD"
+    cargo test --release || {
+      echo "Error running tests in $PWD"
+      exit 1
+    }
+  fi
+
+  local SOLUTIONS=$(find target/release -maxdepth 1 -type f -name '0[12]' | sort || true)
+  for solution in $SOLUTIONS; do
+    local SOLUTION_PATH=$(readlink -f "$solution")
+    $SOLUTION_PATH || {
+      echo "Error running solution: $PWD/$solution"
+      exit 1
+    }
+    echo "$SOLUTION_PATH" ✓
+  done
+}
+
 resolve_haskell() {
   common_scripts
 
@@ -200,13 +312,6 @@ resolve_kotlin() {
     }
   fi
 
-  if [ "$CHECK" == "1" ] && [ ! -f test.sh ] && [ -d tests ] && [ -f gradlew ]; then
-    ./gradlew ktfmtFormat || {
-      echo "Error running tests in $PWD"
-      exit 1
-    }
-  fi
-
   if [ "$TEST" == "1" ] && [ ! -f test.sh ] && [ -d tests ] && [ -f gradlew ]; then
     ./gradlew test || {
       echo "Error running tests in $PWD"
@@ -258,6 +363,15 @@ main() {
           ;;
         *haskell)
           resolve_haskell
+          ;;
+        *lua)
+          resolve_lua
+          ;;
+        *go)
+          resolve_go
+          ;;
+        *rust)
+          resolve_rust
           ;;
         *)
           echo "Unknown resolution type for $year/$exercise/$resolution"

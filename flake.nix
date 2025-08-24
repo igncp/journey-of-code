@@ -17,18 +17,41 @@
       in {
         devShells = {
           default = pkgs.mkShell {
+            shellHook = ''
+              eval "$(luarocks path)"
+            '';
             packages =
               []
               ++ (with pkgs; [
                 bashInteractive
-                go
-                gradle
-                haskellPackages.stack
-                kotlin
-                ktfmt
-                lua
                 podman
+
+                go
+                gopls
+
+                haskellPackages.stack
+
+                cargo
+                rust-analyzer
+                rustc
+
+                gradle
+                kotlin
+                kotlin-language-server
+                ktlint
+
+                lua
+                luarocks
+
+                libyaml
                 ruby
+                ruby-lsp
+                zlib
+
+                php
+                php.packages.composer
+                php82Packages.php-cs-fixer
+                phpactor
               ]);
           };
           swift = pkgs.mkShell.override {inherit (pkgs.swift) stdenv;} {
